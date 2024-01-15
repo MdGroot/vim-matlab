@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 __author__ = 'daeyun'
 
@@ -11,7 +11,7 @@ if use_pexpect:
 if not use_pexpect:
     from subprocess import Popen, PIPE
 
-import SocketServer
+import socketserver as SocketServer
 import os
 import random
 import signal
@@ -76,21 +76,21 @@ class Matlab:
                     self.proc.stdin.flush()
                 break
             except Exception as ex:
-                print ex
+                print (ex)
                 self.launch_process()
                 num_retry += 1
                 time.sleep(1)
 
 
 class TCPHandler(SocketServer.StreamRequestHandler):
-    def handle(self):
-        print_flush("New connection: {}".format(self.client_address))
+    #def handle(self):
+        #print_flush("New connection: {}".format(self.client_address))
 
         while True:
             msg = self.rfile.readline()
             if not msg:
                 break
-            msg = msg.strip()
+            msg = msg.strip().decode("utf-8")
             print_flush((msg[:74] + '...') if len(msg) > 74 else msg, end='')
 
             options = {
@@ -132,14 +132,24 @@ def output_filter(output_string):
     :return: The filtered string.
     """
     global hide_until_newline
-    if hide_until_newline:
-        if '\n' in output_string:
-            hide_until_newline = False
-            return output_string[output_string.find('\n'):]
-        else:
-            return ''
-    else:
-        return output_string
+    return output_string
+    # TODO broken ...
+    # if hide_until_newline:
+        # if '\n' in output_string:
+            # hide_until_newline = False
+            # return output_string[output_string.find('\n'):]
+        # else:
+            # return ''
+    # else:
+        # return output_string
+#    if hide_until_newline:
+#        if '\n' in output_string:
+#            hide_until_newline = False
+#            return output_string[output_string.find('\n'):]
+#        else:
+#            return ''
+#    else:
+#        return output_string
 
 
 def input_filter(input_string):
