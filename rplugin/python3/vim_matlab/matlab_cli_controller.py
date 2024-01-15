@@ -1,13 +1,13 @@
 import time
 from threading import Timer
 
-from io_helper import find_plugin_matlab_path
+from vim_matlab.io_helper import find_plugin_matlab_path
 
 
 __author__ = 'daeyun'
 
 import socket
-import logger
+import vim_matlab.logger as logger
 
 
 class MatlabCliController:
@@ -26,7 +26,7 @@ class MatlabCliController:
         num_retry = 0
         while num_retry < 3:
             try:
-                self.sock.sendall(code + "\n")
+                self.sock.sendall(bytes(code + "\n", "utf-8"))
                 logger.log.info(code)
                 break
             except Exception as ex:
