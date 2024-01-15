@@ -83,8 +83,8 @@ class Matlab:
 
 
 class TCPHandler(SocketServer.StreamRequestHandler):
-    #def handle(self):
-        #print_flush("New connection: {}".format(self.client_address))
+    def handle(self):
+        print_flush("New connection: {}".format(self.client_address))
 
         while True:
             msg = self.rfile.readline()
